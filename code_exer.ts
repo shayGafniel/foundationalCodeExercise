@@ -53,7 +53,7 @@ const createEdgesOnAstrics = (tables: Table[], edge: Edge): Edge[] => {
             "confidence": edge.confidence
         })
     });
-    console.log("newEdges", newEdges)
+
     return newEdges
 }
 
@@ -75,14 +75,14 @@ const main = () => {
 
     const astricsEdges = wildEdges.filter((edge: Edge) => edge.dst_column.col_name == "*" && edge.src_column.col_name == "*")
     const edgesWithoutAstrixes = wildEdges.filter((edge: Edge) => edge.dst_column.col_name != "*" && edge.src_column.col_name != "*")
-    const expandedEdges = [...edgesWithoutAstrixes, ...astricsEdges.map((edge: Edge) => createEdgesOnAstrics(wildTables, edge))]
+    const expandedEdges = [...edgesWithoutAstrixes, ...astricsEdges.flatMap((edge: Edge) => createEdgesOnAstrics(wildTables, edge))]
     writeFileWithcontent("levelThree.json", JSON.stringify({ tables: wildTables, edges: expandedEdges }))
 
 
-    const advancedEdges = advancedCardSample.edges
-    const advancedTables = advancedCardSample.tables
-    const advancedstricsEdges = advancedEdges.filter((edge: Edge) => edge.dst_column.col_name == "*" && edge.src_column.col_name == "*")
-    const advancedEdgesWithoutAstrixes = advancedEdges.filter((edge: Edge) => edge.dst_column.col_name != "*" && edge.src_column.col_name != "*")
+    // const advancedEdges = advancedCardSample.edges
+    // const advancedTables = advancedCardSample.tables
+    // const advancedstricsEdges = advancedEdges.filter((edge: Edge) => edge.dst_column.col_name == "*" && edge.src_column.col_name == "*")
+    // const advancedEdgesWithoutAstrixes = advancedEdges.filter((edge: Edge) => edge.dst_column.col_name != "*" && edge.src_column.col_name != "*")
 
     //calc missing tables
     // how i would calculate the tables:
